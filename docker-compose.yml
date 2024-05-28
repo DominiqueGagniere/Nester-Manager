@@ -1,5 +1,11 @@
 version: '3.8'
 
+volumes:
+  postgres_data:
+
+networks:
+  postgres_network:
+
 services:
   # SGBD service
   postgres:
@@ -14,6 +20,8 @@ services:
     volumes:
       - ./NesterManDB.sql:/docker-entrypoint-initdb.d/NesterManDB.sql:ro
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - postgres_network
 
   # Superivision (GUI de la BDD)
   adminer:
@@ -34,6 +42,6 @@ services:
       - "9187:9187"
     depends_on:
       - postgres
+    networks:
+      - postgres_network
 
-volumes:
-  postgres_data:
