@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # SGBD service
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: MSPR
+      POSTGRES_PASSWORD: MSPR
+      POSTGRES_DB: NesterManDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./NesterManDB.sql:/docker-entrypoint-initdb.d/NesterManDB.sql:ro
+      - postgres_data:/var/lib/postgresql/data
+
+  # Superivision (GUI de la BDD)
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+  
+  pg-exporter:
+    image: bitnami/postgres-exporter:latest
+    container_name: pg-exporter
+    environment:
+      #DATA_SOURCE_URI: "postgresql://MSPR:MSPR@NesterManDB:5432/exampledb?sslmode=disable"
+      POSTGRES_EXPORTER_WEB_LISTEN_ADDRESS: ":9187"
+    ports:
+      - "9187:9187"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
