@@ -5,6 +5,7 @@ volumes:
 
 networks:
   postgres_network:
+    driver: bridge
 
 services:
   # SGBD service
@@ -31,6 +32,8 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+    networks:
+      - adminer
   
   pg-exporter:
     image: bitnami/postgres-exporter:latest
