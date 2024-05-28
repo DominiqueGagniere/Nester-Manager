@@ -33,7 +33,8 @@ services:
     depends_on:
       - postgres
     networks:
-      - adminer
+      - postgres_network
+
   
   pg-exporter:
     image: bitnami/postgres-exporter:latest
