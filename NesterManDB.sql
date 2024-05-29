@@ -1,111 +1,233 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
 -- Schema NesterManDB
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema NesterManDB
+-- -----------------------------------------------------
 CREATE ROLE mspr WITH LOGIN PASSWORD 'MSPR';
 CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION mspr;
-SET search_path TO "NesterManDB";
+USE "NesterManDB" ;
 
--- Table All_Instance
-CREATE TABLE IF NOT EXISTS "All_Instance" (
-  "idAll_Instance" SERIAL PRIMARY KEY
-);
+-- -----------------------------------------------------
+-- Table "NesterManDB"."instance"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."instance" (
+  "idAll_Instance" INT NOT NULL SERIAL,
+  PRIMARY KEY ("idAll_Instance"))
 
--- Table List_Harvester
-CREATE TABLE IF NOT EXISTS "List_Harvester" (
-  "Hostname" VARCHAR(45) NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  "LAN_IP" VARCHAR(45) NOT NULL,
-  PRIMARY KEY ("All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_List_Harvester_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."harvester"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."harvester" (
+  "hostname" VARCHAR(45) NOT NULL,
+  "mac_addr" VARCHAR(17) NOT NULL,
+  "ip_lan" VARCHAR(45) NOT NULL,
+  "ip_wan" VARCHAR(45) NOT NULL,
+  "serialnum" INT NOT NULL,
+  "cpu_name" VARCHAR(45) NOT NULL,
+  "ram_size_gb" INT NOT NULL,
+  "disk_type" VARCHAR(45) NOT NULL,
+  "disk_size_gb" INT NOT NULL,
+  "os_version" VARCHAR(15) NOT NULL,
+  "harvester_version" VARCHAR(15) NOT NULL,
+  "instance_idAll_Instance" INT NOT NULL,
+  INDEX "fk_harvester_instance1_idx" ("instance_idAll_Instance" ASC) VISIBLE,
+  CONSTRAINT "fk_harvester_instance1"
+    FOREIGN KEY ("instance_idAll_Instance")
+    REFERENCES "NesterManDB"."instance" ("idAll_Instance")
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+    ON UPDATE NO ACTION)
 
--- Table State_Instance
-CREATE TABLE IF NOT EXISTS "State_Instance" (
-  "idState_Instance" INT NOT NULL,
-  "state" VARCHAR(45) NOT NULL,
-  "List_Harvester_idList_Harvester" INT NOT NULL,
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."state_instance"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."state_instance" (
   "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idState_Instance", "All_Instance_idAll_Instance"),
+  "state" VARCHAR(45) NOT NULL,
+  PRIMARY KEY ("All_Instance_idAll_Instance"),
+  INDEX "fk_State_Instance_All_Instance1_idx" ("All_Instance_idAll_Instance" ASC) VISIBLE,
   CONSTRAINT "fk_State_Instance_All_Instance1"
     FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
+    REFERENCES "NesterManDB"."instance" ("idAll_Instance")
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+    ON UPDATE NO ACTION)
 
--- Table Customer_Affectation
-CREATE TABLE IF NOT EXISTS "Customer_Affectation" (
-  "idCustomer_Affectation" INT NOT NULL,
-  "Company_name" VARCHAR(45) NOT NULL,
-  "Adress" VARCHAR(45) NOT NULL,
-  "Responsible" VARCHAR(45) NOT NULL,
-  "Responsible_email" VARCHAR(45) NOT NULL,
-  "Responsible_phone" VARCHAR(45) NOT NULL,
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."client"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."client" (
   "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idCustomer_Affectation", "All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_Customer_Affectation_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+  "company_name" VARCHAR(45) NOT NULL,
+  "company_address" VARCHAR(45) NOT NULL,
+  "responsible" VARCHAR(45) NOT NULL,
+  "responsible_email" VARCHAR(45) NOT NULL,
+  "responsible_phone" VARCHAR(45) NOT NULL,
+  PRIMARY KEY ("All_Instance_idAll_Instance"))
 
--- Table NesterServer_TechInfo
-CREATE TABLE IF NOT EXISTS "NesterServer_TechInfo" (
-  "Hostname" VARCHAR(45) NOT NULL,
-  "LAN_IP" VARCHAR(45) NOT NULL,
-  "MAC" VARCHAR(17) NOT NULL,
-  "WAN_IP" VARCHAR(45) NOT NULL,
-  "SerialNum" INT NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_NesterServer_TechInfo_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
 
--- Table Tech_ID
-CREATE TABLE IF NOT EXISTS "Tech_ID" (
-  "idTech_ID" SERIAL PRIMARY KEY,
-  "Name" VARCHAR(45) NOT NULL,
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."nester_server"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."nester_server" (
+  "hostname" VARCHAR(45) NOT NULL,
+  "mac_addr" VARCHAR(17) NOT NULL,
+  "ip_lan" VARCHAR(45) NOT NULL,
+  "ip_wan" VARCHAR(45) NOT NULL,
+  "serialnum" INT NOT NULL,
+  "instance_idAll_Instance" INT NOT NULL,
+  PRIMARY KEY ("instance_idAll_Instance"),
+  CONSTRAINT "fk_nester_server_instance1"
+    FOREIGN KEY ("instance_idAll_Instance")
+    REFERENCES "NesterManDB"."instance" ("idAll_Instance")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."intervention_status"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."intervention_status" (
+  "idIntervention" INT NOT NULL SERIAL,
+  "DateTime" DATETIME(50) NOT NULL,
+  "Status" TINYINT NOT NULL,
+  PRIMARY KEY ("idIntervention"))
+
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."tech"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."tech" (
+  "idTech_ID" INT NOT NULL SERIAL,
+  "Name" VARCHAR(30) NOT NULL,
   "Lastname" VARCHAR(45) NOT NULL,
-  "Email" VARCHAR(45) NOT NULL,
-  "Phone" VARCHAR(45) NOT NULL
-);
+  "Email" VARCHAR(30) NOT NULL,
+  "Phone" VARCHAR(45) NOT NULL,
+  "Service" VARCHAR(20) NOT NULL,
+  PRIMARY KEY ("idTech_ID"))
 
--- Table Intervention
-CREATE TABLE IF NOT EXISTS "Intervention" (
-  "idIntervention" SERIAL NOT NULL,
-  "DateTime" TIMESTAMP NOT NULL,
-  "Status" SMALLINT NOT NULL,
-  "Tech_ID_idTech_ID" INT NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idIntervention", "Tech_ID_idTech_ID", "All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_Intervention_Tech_ID1"
-    FOREIGN KEY ("Tech_ID_idTech_ID")
-    REFERENCES "Tech_ID" ("idTech_ID")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT "fk_Intervention_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
 
--- Table Licence_Key
-CREATE TABLE IF NOT EXISTS "Licence_Key" (
-  "idLicence_Key" SERIAL NOT NULL,
-  "Licence_Keycol" VARCHAR(45) NOT NULL,
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."licence"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."licence" (
   "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idLicence_Key", "All_Instance_idAll_Instance"),
+  "key" VARCHAR(8) NOT NULL,
+  PRIMARY KEY ("All_Instance_idAll_Instance"),
+  INDEX "fk_Licence_Key_All_Instance1_idx" ("All_Instance_idAll_Instance" ASC) VISIBLE,
   CONSTRAINT "fk_Licence_Key_All_Instance1"
     FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
+    REFERENCES "NesterManDB"."instance" ("idAll_Instance")
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."intervention_type"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."intervention_type" (
+  "type" VARCHAR(20) NOT NULL,
+  PRIMARY KEY ("type"),
+  UNIQUE INDEX "type_UNIQUE" ("type" ASC) VISIBLE)
+
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."installer"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."installer" (
+  "idinstaller" INT NOT NULL SERIAL,
+  "company_name" VARCHAR(45) NOT NULL,
+  "company_ho_address" VARCHAR(45) NOT NULL,
+  "contact_name" VARCHAR(45) NOT NULL,
+  "siret" VARCHAR(14) NOT NULL,
+  PRIMARY KEY ("idinstaller"))
+
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."intervention"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."intervention" (
+  "id" INT NOT NULL SERIAL,
+  "intervention_type_type" VARCHAR(20) NOT NULL,
+  "intervention_status_idIntervention" INT NOT NULL,
+  "Tech_ID_idTech_ID" INT NULL,
+  "installer_idinstaller" INT NULL,
+  "customer_affectation_All_Instance_idAll_Instance" INT NULL,
+  "reason" VARCHAR(70) NOT NULL,
+  PRIMARY KEY ("id", "intervention_type_type", "intervention_status_idIntervention", "Tech_ID_idTech_ID", "installer_idinstaller", "customer_affectation_All_Instance_idAll_Instance"),
+  INDEX "fk_intervention_intervention_type1_idx" ("intervention_type_type" ASC) VISIBLE,
+  INDEX "fk_intervention_intervention_status1_idx" ("intervention_status_idIntervention" ASC) VISIBLE,
+  INDEX "fk_intervention_Tech_ID1_idx" ("Tech_ID_idTech_ID" ASC) VISIBLE,
+  INDEX "fk_intervention_installer1_idx" ("installer_idinstaller" ASC) VISIBLE,
+  INDEX "fk_intervention_customer_affectation1_idx" ("customer_affectation_All_Instance_idAll_Instance" ASC) VISIBLE,
+  CONSTRAINT "fk_intervention_intervention_type1"
+    FOREIGN KEY ("intervention_type_type")
+    REFERENCES "NesterManDB"."intervention_type" ("type")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT "fk_intervention_intervention_status1"
+    FOREIGN KEY ("intervention_status_idIntervention")
+    REFERENCES "NesterManDB"."intervention_status" ("idIntervention")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT "fk_intervention_Tech_ID1"
+    FOREIGN KEY ("Tech_ID_idTech_ID")
+    REFERENCES "NesterManDB"."tech" ("idTech_ID")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT "fk_intervention_installer1"
+    FOREIGN KEY ("installer_idinstaller")
+    REFERENCES "NesterManDB"."installer" ("idinstaller")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT "fk_intervention_customer_affectation1"
+    FOREIGN KEY ("customer_affectation_All_Instance_idAll_Instance")
+    REFERENCES "NesterManDB"."client" ("All_Instance_idAll_Instance")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table "NesterManDB"."instance_affectation"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "NesterManDB"."instance_affectation" (
+  "client_All_Instance_idAll_Instance" INT NOT NULL,
+  "instance_idAll_Instance" INT NOT NULL,
+  PRIMARY KEY ("client_All_Instance_idAll_Instance", "instance_idAll_Instance"),
+  INDEX "fk_instance_affectation_instance1_idx" ("instance_idAll_Instance" ASC) VISIBLE,
+  CONSTRAINT "fk_instance_affectation_client1"
+    FOREIGN KEY ("client_All_Instance_idAll_Instance")
+    REFERENCES "NesterManDB"."client" ("All_Instance_idAll_Instance")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT "fk_instance_affectation_instance1"
+    FOREIGN KEY ("instance_idAll_Instance")
+    REFERENCES "NesterManDB"."instance" ("idAll_Instance")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
