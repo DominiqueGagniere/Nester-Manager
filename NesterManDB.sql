@@ -1,111 +1,63 @@
--- Create schema
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema NesterManDB
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema NesterManDB
+-- -----------------------------------------------------
 CREATE ROLE mspr WITH LOGIN PASSWORD 'MSPR';
-CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION mspr;
-SET search_path TO "NesterManDB";
+CREATE SCHEMA IF NOT EXISTS `NesterManDB` AUTHORIZATION mspr;
+USE `NesterManDB` ;
 
--- Table All_Instance
-CREATE TABLE IF NOT EXISTS "All_Instance" (
-  "idAll_Instance" SERIAL PRIMARY KEY
-);
+-- -----------------------------------------------------
+-- Table `NesterManDB`.`instance`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `NesterManDB`.`instance` (
+  `idAll_Instance` INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`idAll_Instance`))
+ENGINE = InnoDB;
 
--- Table List_Harvester
-CREATE TABLE IF NOT EXISTS "List_Harvester" (
-  "Hostname" VARCHAR(45) NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  "LAN_IP" VARCHAR(45) NOT NULL,
-  PRIMARY KEY ("All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_List_Harvester_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
 
--- Table State_Instance
-CREATE TABLE IF NOT EXISTS "State_Instance" (
-  "idState_Instance" INT NOT NULL,
-  "state" VARCHAR(45) NOT NULL,
-  "List_Harvester_idList_Harvester" INT NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idState_Instance", "All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_State_Instance_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+-- -----------------------------------------------------
+-- Table `NesterManDB`.`harvester`
+-- -----------------------------------------------------
+CREATE TABLE "NesterManDB"."harvester" (
+    hostname VARCHAR(45) NOT NULL,
+    mac_addr VARCHAR(17) NOT NULL,
+    ip_lan VARCHAR(45) NOT NULL,
+    ip_wan VARCHAR(45) NOT NULL,
+    serialnum INT NOT NULL,
+    cpu_name VARCHAR(45) NOT NULL,
+    ram_size_gb INT NOT NULL,
+    disk_type VARCHAR(45) NOT NULL,
+    disk_size_gb INT NOT NULL,
+    os_version VARCHAR(15) NOT NULL,
+    harvester_version VARCHAR(15) NOT NULL
+) INHERITS ("NesterManDB"."instance");
 
--- Table Customer_Affectation
-CREATE TABLE IF NOT EXISTS "Customer_Affectation" (
-  "idCustomer_Affectation" INT NOT NULL,
-  "Company_name" VARCHAR(45) NOT NULL,
-  "Adress" VARCHAR(45) NOT NULL,
-  "Responsible" VARCHAR(45) NOT NULL,
-  "Responsible_email" VARCHAR(45) NOT NULL,
-  "Responsible_phone" VARCHAR(45) NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idCustomer_Affectation", "All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_Customer_Affectation_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+-- -----------------------------------------------------
+-- Table `NesterManDB`.`nester_server`
+-- -----------------------------------------------------
+CREATE TABLE "NesterManDB"."nester_server" (
+    hostname VARCHAR(45) NOT NULL,
+    mac_addr VARCHAR(17) NOT NULL,
+    ip_lan VARCHAR(45) NOT NULL,
+    ip_wan VARCHAR(45) NOT NULL,
+    serialnum INT NOT NULL,
+    cpu_name VARCHAR(45) NOT NULL,
+    ram_size_gb INT NOT NULL,
+    disk_type VARCHAR(45) NOT NULL,
+    disk_size_gb INT NOT NULL,
+    os_version VARCHAR(15) NOT NULL,
+    harvester_version VARCHAR(15) NOT NULL
+) INHERITS ("NesterManDB"."instance");
 
--- Table NesterServer_TechInfo
-CREATE TABLE IF NOT EXISTS "NesterServer_TechInfo" (
-  "Hostname" VARCHAR(45) NOT NULL,
-  "LAN_IP" VARCHAR(45) NOT NULL,
-  "MAC" VARCHAR(17) NOT NULL,
-  "WAN_IP" VARCHAR(45) NOT NULL,
-  "SerialNum" INT NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_NesterServer_TechInfo_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
-
--- Table Tech_ID
-CREATE TABLE IF NOT EXISTS "Tech_ID" (
-  "idTech_ID" SERIAL PRIMARY KEY,
-  "Name" VARCHAR(45) NOT NULL,
-  "Lastname" VARCHAR(45) NOT NULL,
-  "Email" VARCHAR(45) NOT NULL,
-  "Phone" VARCHAR(45) NOT NULL
-);
-
--- Table Intervention
-CREATE TABLE IF NOT EXISTS "Intervention" (
-  "idIntervention" SERIAL NOT NULL,
-  "DateTime" TIMESTAMP NOT NULL,
-  "Status" SMALLINT NOT NULL,
-  "Tech_ID_idTech_ID" INT NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idIntervention", "Tech_ID_idTech_ID", "All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_Intervention_Tech_ID1"
-    FOREIGN KEY ("Tech_ID_idTech_ID")
-    REFERENCES "Tech_ID" ("idTech_ID")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT "fk_Intervention_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
-
--- Table Licence_Key
-CREATE TABLE IF NOT EXISTS "Licence_Key" (
-  "idLicence_Key" SERIAL NOT NULL,
-  "Licence_Keycol" VARCHAR(45) NOT NULL,
-  "All_Instance_idAll_Instance" INT NOT NULL,
-  PRIMARY KEY ("idLicence_Key", "All_Instance_idAll_Instance"),
-  CONSTRAINT "fk_Licence_Key_All_Instance1"
-    FOREIGN KEY ("All_Instance_idAll_Instance")
-    REFERENCES "All_Instance" ("idAll_Instance")
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

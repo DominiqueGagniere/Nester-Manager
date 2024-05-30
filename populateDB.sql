@@ -1,62 +1,41 @@
--- Switch to the NesterManDB schema
-SET search_path TO "NesterManDB";
-
--- Inserting test entries into Nester_server
+-- Ajout de données dans les tables harvester et server
 DO $$
+DECLARE
+    i INT;
 BEGIN
     FOR i IN 1..10 LOOP
-        INSERT INTO "Nester_server" (server_name, server_ip, server_location)
-        VALUES (
-            'Server' || i, 
-            '192.168.1.' || i, 
-            'Location' || i
-        );
+        INSERT INTO "NesterManDB"."harvester" 
+            (hostname, mac_addr, ip_lan, ip_wan, serialnum, cpu_name, ram_size_gb, disk_type, disk_size_gb, os_version, harvester_version, instance_idAll_Instance)
+        VALUES
+            (format('host_harvester_%s', i), format('00:1A:2B:3C:4D:%02s', i), format('192.168.0.%s', i), format('10.0.0.%s', i), i, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0', i);
+        
+        INSERT INTO "NesterManDB"."nester_server" 
+            (hostname, mac_addr, ip_lan, ip_wan, serialnum, cpu_name, ram_size_gb, disk_type, disk_size_gb, os_version, harvester_version, instance_idAll_Instance)
+        VALUES
+            (format('host_server_%s', i), format('00:1A:2B:3C:4D:%02s', i), format('192.168.1.%s', i), format('10.0.1.%s', i), i + 10, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', '2.0', i + 10);
     END LOOP;
 END $$;
 
--- Inserting test entries into harvester
-DO $$
-BEGIN
-    FOR i IN 1..10 LOOP
-        INSERT INTO "harvester" (
-            hostname, mac_addr, ip_lan, ip_wan, serialnum, cpu_name, ram_size_gb, 
-            disk_type, disk_size_gb, os_version, harvester_version, instance_idAll_Instance
-        ) VALUES (
-            'Host' || i,
-            '00:1B:44:11:3A:B' || LPAD(i::text, 2, '0'),
-            '10.0.0.' || i,
-            '172.16.0.' || i,
-            i,
-            'CPU' || i,
-            8 + i,  -- varying RAM sizes
-            'SSD',
-            256 + i * 10,  -- varying disk sizes
-            'v1.0',
-            'v1.0',
-            1  -- assuming instance_idAll_Instance exists
-        );
-    END LOOP;
-END $$;
 
--- Inserting test clients into client
-INSERT INTO "client" (client_name) VALUES ('NFL'), ('Zero Soft');
-
--- Inserting test intervention types into intervention_type
-INSERT INTO "intervention_type" (type_name) 
-VALUES ('Installation'), ('Mise à jour'), ('Maintenance'), ('Incident'), ('Demande');
-
--- Inserting test techs into tech
-INSERT INTO "tech" (tech_name) 
-VALUES ('Dominique Gagnière'), ('Evan Michon'), ('Romain Templier'), ('Samuelle Mccalla');
-
--- Inserting test interventions into intervention
-INSERT INTO "intervention" (client_id, intervention_type_id, tech_id, start_time, end_time, status)
-VALUES
-    ((SELECT client_id FROM "client" WHERE client_name = 'NFL'), 
-     (SELECT intervention_type_id FROM intervention_type WHERE type_name = 'Installation'), 
-     (SELECT tech_id FROM tech ORDER BY RANDOM() LIMIT 1),
-     NOW() - INTERVAL '1 day', NOW(), 'Resolved'),
-    ((SELECT client_id FROM "client" WHERE client_name = 'Zero Soft'), 
-     (SELECT intervention_type_id FROM intervention_type WHERE type_name = 'Maintenance'), 
-     (SELECT tech_id FROM tech ORDER BY RANDOM() LIMIT 1),
-     NOW() - INTERVAL '2 days', NOW() - INTERVAL '1 day', 'Unresolved');
+-- Ajout de données dans la table state_instance
+INSERT INTO "NesterManDB"."state_instance" (All_Instance_idAll_Instance, state) VALUES
+(1, 'ok'),
+(2, 'nok'),
+(3, 'decommissioning'),
+(4, 'stop'),
+(5, 'ok'),
+(6, 'nok'),
+(7, 'decommissioning'),
+(8, 'stop'),
+(9, 'ok'),
+(10, 'nok'),
+(11, 'stop'),
+(12, 'stop'),
+(13, 'stop'),
+(14, 'stop'),
+(15, 'ok'),
+(16, 'stop'),
+(17, 'ok'),
+(18, 'decommissioning'),
+(19, 'ok'),
+(20, 'ok');
