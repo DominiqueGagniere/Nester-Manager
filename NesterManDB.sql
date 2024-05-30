@@ -1,5 +1,6 @@
 -- Create schema
-CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION MSPR;
+CREATE ROLE mspr WITH LOGIN PASSWORD 'MSPR';
+CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION mspr;
 SET search_path TO "NesterManDB";
 
 -- Table All_Instance
