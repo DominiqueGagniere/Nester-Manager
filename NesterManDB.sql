@@ -2,15 +2,15 @@
 -- Schema NesterManDB
 -- -----------------------------------------------------
 CREATE ROLE mspr WITH LOGIN PASSWORD 'MSPR';
-CREATE SCHEMA IF NOT EXISTS `NesterManDB` AUTHORIZATION mspr;
-USE `NesterManDB` ;
+CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION mspr;
+USE "NesterManDB" ;
 
 -- -----------------------------------------------------
 -- Table `NesterManDB`.`instance`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `NesterManDB`.`instance` (
-  `idAll_Instance` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`idAll_Instance`))
+CREATE TABLE IF NOT EXISTS "NesterManDB"."instance" (
+  "idAll_Instance" INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY ("idAll_Instance"))
 ENGINE = InnoDB;
 
 
