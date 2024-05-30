@@ -1,5 +1,5 @@
 -- Create schema
-CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION postgres;
+CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION MSPR;
 SET search_path TO "NesterManDB";
 
 -- Table All_Instance
