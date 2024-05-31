@@ -60,27 +60,27 @@ CREATE TABLE IF NOT EXISTS "NesterManDB"."nester_server" (
 -- -----------------------------------------------------
 -- Table client 
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `NesterManDB`.`client` (
-  `id_client` INT NOT NULL,
-  `company_name` VARCHAR(45) NOT NULL,
-  `company_address` VARCHAR(45) NOT NULL,
-  `responsible` VARCHAR(45) NOT NULL,
-  `responsible_email` VARCHAR(45) NOT NULL,
-  `responsible_phone` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`All_Instance_idAll_Instance`))
+CREATE TABLE IF NOT EXISTS "NesterManDB"."client" (
+  "id_client" INT NOT NULL,
+  "company_name" VARCHAR(45) NOT NULL,
+  "company_address" VARCHAR(45) NOT NULL,
+  "responsible" VARCHAR(45) NOT NULL,
+  "responsible_email" VARCHAR(45) NOT NULL,
+  "responsible_phone" VARCHAR(45) NOT NULL,
+  PRIMARY KEY ("All_Instance_idAll_Instance"))
 
 -- -----------------------------------------------------
 -- Table client 
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `NesterManDB`.`instance_affectation` (
-  `id_client` INT NOT NULL, 
-  `id_instance` INT NOT NULL,
-  CONSTRAINT `fk_client`
-    FOREIGN KEY (`id_client`)
-    REFERENCES `NesterManDB`.`client`(`id_client`),
-  CONSTRAINT `fk_instance`
-    FOREIGN KEY (`id_instance`)
-    REFERENCES `NesterManDB`.`instance`(`id_instance`)
+CREATE TABLE IF NOT EXISTS "NesterManDB"."instance_affectation" (
+  "id_client" INT NOT NULL, 
+  "id_instance" INT NOT NULL,
+  CONSTRAINT "fk_client"
+    FOREIGN KEY ("id_client")
+    REFERENCES "NesterManDB"."client"("id_client"),
+  CONSTRAINT "fk_instance"
+    FOREIGN KEY ("id_instance")
+    REFERENCES "NesterManDB"."instance"("id_instance")
 );
 
 
