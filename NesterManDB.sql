@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS "NesterManDB"."client" (
   "responsible" VARCHAR(45) NOT NULL,
   "responsible_email" VARCHAR(45) NOT NULL,
   "responsible_phone" VARCHAR(45) NOT NULL,
-  PRIMARY KEY ("All_Instance_idAll_Instance"))
+  PRIMARY KEY ("All_Instance_idAll_Instance"));
 
 -- -----------------------------------------------------
 -- Table client 
