@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS "NesterManDB"."client" (
   PRIMARY KEY ("id_client"));
 
 -- -----------------------------------------------------
--- Table client 
+-- Table instance_affectation
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS "NesterManDB"."instance_affectation" (
   "id_client" INT NOT NULL, 
