@@ -42,8 +42,8 @@ BEGIN
 END $$;
  */
 INSERT INTO "NesterManDB"."instance_affectation" (id_client, id_instance)
-VALUES (1,1)
-       (1,2) 
+VALUES (1,1),
+       (1,2);
     
 
 
