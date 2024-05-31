@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "NesterManDB"."instance" (
   os_version VARCHAR(15) NOT NULL,
   harvester_version VARCHAR(15),
   nester_version VARCHAR(15),
-  PRIMARY KEY ("id_client")
+  PRIMARY KEY ("id_instance")
 );
 
 -- -----------------------------------------------------
