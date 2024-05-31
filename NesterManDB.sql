@@ -57,7 +57,7 @@ VALUES
     (1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.edu', '434-296-7288'),
     (2, 'ARESIA Inc', '3498-3414 13th St NW Washington', 'Alain Thevenot', 'at@alesia.com', '+12124567890');
 
--- Ensure instance table is populated
+-- Populate instance table with explicit values to ensure presence
 INSERT INTO "NesterManDB"."instance" (hostname, mac_addr, ip_lan, ip_wan, serialnum, cpu_name, ram_size_gb, disk_type, disk_size_gb, os_version, harvester_version, nester_version)
 VALUES
     ('host_harvester_1', '00:1A:2B:3C:4D:01', '192.168.0.1', '10.0.0.1', 1, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0', NULL),
@@ -67,27 +67,15 @@ VALUES
     ('host_harvester_5', '00:1A:2B:3C:4D:05', '192.168.0.5', '10.0.0.5', 5, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0', NULL),
     ('host_harvester_6', '00:1A:2B:3C:4D:06', '192.168.0.6', '10.0.0.6', 6, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0', NULL),
     ('host_harvester_7', '00:1A:2B:3C:4D:07', '192.168.0.7', '10.0.0.7', 7, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0', NULL),
-    ('host_harvester_8', '00:1A:2B:3C:4D:08', '192.168.0.8', '10.0.0.8', 8, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0', NULL);
-
--- Ensure harvester and nester_server tables are populated
-DO $$
-DECLARE
-    i INT;
-BEGIN
-    FOR i IN 1..8 LOOP
-        INSERT INTO "NesterManDB"."harvester" 
-            (id_instance, hostname, mac_addr, ip_lan, ip_wan, serialnum, cpu_name, ram_size_gb, disk_type, disk_size_gb, os_version, harvester_version)
-        VALUES
-            (i, format('host_harvester_%s', i), format('00:1A:2B:3C:4D:%02s', i), format('192.168.0.%s', i), format('10.0.0.%s', i), i, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0');
-    END LOOP;
-
-    FOR i IN 9..16 LOOP
-        INSERT INTO "NesterManDB"."nester_server" 
-            (id_instance, hostname, mac_addr, ip_lan, ip_wan, serialnum, cpu_name, ram_size_gb, disk_type, disk_size_gb, os_version, nester_version)
-        VALUES
-            (i, format('host_server_%s', i-8), format('00:1A:2B:3C:4D:%02s', i-8), format('192.168.1.%s', i-8), format('10.0.1.%s', i-8), i, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', '2.0');
-    END LOOP;
-END $$;
+    ('host_harvester_8', '00:1A:2B:3C:4D:08', '192.168.0.8', '10.0.0.8', 8, 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0', NULL),
+    ('host_server_1', '00:1A:2B:3C:4D:09', '192.168.1.1', '10.0.1.1', 9, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0'),
+    ('host_server_2', '00:1A:2B:3C:4D:10', '192.168.1.2', '10.0.1.2', 10, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0'),
+    ('host_server_3', '00:1A:2B:3C:4D:11', '192.168.1.3', '10.0.1.3', 11, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0'),
+    ('host_server_4', '00:1A:2B:3C:4D:12', '192.168.1.4', '10.0.1.4', 12, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0'),
+    ('host_server_5', '00:1A:2B:3C:4D:13', '192.168.1.5', '10.0.1.5', 13, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0'),
+    ('host_server_6', '00:1A:2B:3C:4D:14', '192.168.1.6', '10.0.1.6', 14, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0'),
+    ('host_server_7', '00:1A:2B:3C:4D:15', '192.168.1.7', '10.0.1.7', 15, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0'),
+    ('host_server_8', '00:1A:2B:3C:4D:16', '192.168.1.8', '10.0.1.8', 16, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', NULL, '2.0');
 
 -- Populate instance_affectation table
 DO $$
