@@ -15,3 +15,30 @@ BEGIN
             (format('host_server_%s', i), format('00:1A:2B:3C:4D:%02s', i), format('192.168.1.%s', i), format('10.0.1.%s', i), i + 10, 'Intel Xeon', 32, 'HDD', 1024, 'CentOS 7', '2.0', i + 10);
     END LOOP;
 END $$;
+
+-- Ajout des clients
+INSERT INTO "NesterManDB"."client" (id_client, company_name, company_address, responsible, responsible_email, responsible_phone)
+VALUES (1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.edu', '434-296-7288'),
+       (2, 'ARESIA Inc', '3498-3414 13th St NW Washington', 'Alain Thevenot', 'at@alesia.com', '+12124567890');
+
+
+-- Association des licences aux clients 
+DO $$
+DECLARE
+    i INT;
+BEGIN
+    FOR i IN 1..10 LOOP
+        INSERT INTO "NesterManDB"."instance_affectation" 
+            (id_client, id_instance)
+        VALUES
+            (1, i);
+    END LOOP;
+    FOR i IN 11..20 LOOP
+        INSERT INTO "NesterManDB"."instance_affectation" 
+            (id_client, id_instance)
+        VALUES
+            (2, i);
+    END LOOP;
+END $$;
+
+
