@@ -22,7 +22,7 @@ VALUES (1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.e
        (2, 'ARESIA Inc', '3498-3414 13th St NW Washington', 'Alain Thevenot', 'at@alesia.net', '+12124567890');
 
 
--- Association des licences aux clients 
+/* -- Association des licences aux clients 
 DO $$
 DECLARE
     i INT;
@@ -40,7 +40,11 @@ BEGIN
             (2, i);
     END LOOP;
 END $$;
-
+ */
+INSERT INTO "NesterManDB"."instance_affectation" (id_client, id_instance)
+VALUES (1,1)
+       (1,2) 
+    
 
 
 
