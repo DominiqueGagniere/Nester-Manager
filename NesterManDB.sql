@@ -8,7 +8,7 @@ CREATE SCHEMA IF NOT EXISTS "NesterManDB" AUTHORIZATION mspr;
 -- Table instance
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS "NesterManDB"."instance" (
-  id_instance INT PRIMARY KEY,
+  id_instance SERIAL INT PRIMARY KEY,
   hostname VARCHAR(45) NOT NULL,
   mac_addr VARCHAR(17) NOT NULL,
   ip_lan VARCHAR(45) NOT NULL,
