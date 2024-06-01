@@ -71,10 +71,17 @@ CREATE TABLE IF NOT EXISTS "NesterManDB"."client" (
 -- Table instance_affectation
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS "NesterManDB"."instance_affectation" (
-    id_client INT NOT NULL,
-    id_instance INT NOT NULL,
-    CONSTRAINT fk_client
-        FOREIGN KEY (id_client) REFERENCES "NesterManDB"."client"(id_client),
-    CONSTRAINT fk_instance
-        FOREIGN KEY (id_instance) REFERENCES "NesterManDB"."instance"(id_instance)
+  "id_client" INT NOT NULL,
+  "id_instance" INT NOT NULL,
+  PRIMARY KEY ("id_client", "id_instance"),
+  CONSTRAINT "fk_instance_affectation_instance1_idx"
+    FOREIGN KEY ("id_instance")
+    REFERENCES "NesterManDB"."instance" ("id_instance")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT "fk_instance_affectation_client1"
+    FOREIGN KEY ("id_client")
+    REFERENCES "NesterManDB"."client" ("id_client")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
