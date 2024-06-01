@@ -26,13 +26,6 @@ INSERT INTO "NesterManDB"."nester_server"
 VALUES 
 ('Nester_1', '00:1A:2B:3C:4D:03', '192.168.0.1', '10.0.0.1', '1', 'Intel i7', 16, 'SSD', 512, 'Ubuntu 20.04', '1.0');
 
-INSERT INTO "NesterManDB"."client" 
-(id_client, company_name, company_address, responsible, responsible_email, responsible_phone)
-VALUES 
-(1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.edu', '434-296-7288'),
-(2, 'ARESIA Inc', '3498-3414 13th St NW Washington', 'Alain Thevenot', 'at@alesia.net', '+12124567890');
-
-
 
 -- Ajout des clients
 INSERT INTO "NesterManDB"."client" (id_client, company_name, company_address, responsible, responsible_email, responsible_phone)
