@@ -2,6 +2,7 @@
 -- Schema NesterManDB
 -- -----------------------------------------------------
 CREATE ROLE mspr WITH LOGIN PASSWORD 'MSPR';
+CREATE SCHEMA IF NOT EXISTS NesterManDB AUTHORIZATION mspr;
 -- -----------------------------------------------------
 -- Table instance
 -- -----------------------------------------------------
