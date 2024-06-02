@@ -72,12 +72,12 @@ CREATE TABLE IF NOT EXISTS NesterManDB.instance_affectation (
   id_client INT NOT NULL,
   id_instance INT NOT NULL,
   PRIMARY KEY (id_client, id_instance),
-  CONSTRAINT fk_instance_affectation_instance1_idx
+  CONSTRAINT fk_instance_instanceaffec
     FOREIGN KEY (id_instance)
     REFERENCES NesterManDB.instance (id_instance)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT fk_instance_affectation_client1
+  CONSTRAINT fk_client_instanceaffec
     FOREIGN KEY (id_client)
     REFERENCES NesterManDB.client (id_client)
     ON DELETE NO ACTION
