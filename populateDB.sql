@@ -28,3 +28,19 @@ VALUES
 (1, 1),
 (1, 2),
 (2, 2);
+
+-- -----------------------------------------------------
+-- Insertion dans instance_affectation
+-- -----------------------------------------------------
+
+DO $$
+DECLARE
+    i INT;
+BEGIN
+    FOR i IN 1..20 LOOP
+        INSERT INTO NesterManDB.state_instance (id_instance, state)
+        VALUES
+            (i, 'OK'),
+            (i + 1, 'KO');
+    END LOOP;
+END $$;
