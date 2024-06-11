@@ -15,47 +15,8 @@ CREATE TABLE IF NOT EXISTS nester_man_db.instances (
   FOREIGN KEY (id_nester_server) REFERENCES nester_man_db.nester_server(id_nester_server)
 );
 
--- -----------------------------------------------------
--- Table harvester
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS nester_man_db.harvester (
-    id_harvester SERIAL PRIMARY KEY,
-    hostname VARCHAR(45) NOT NULL,
-    mac_addr VARCHAR(17) NOT NULL,
-    ip_lan VARCHAR(45) NOT NULL,
-    ip_wan VARCHAR(45) NOT NULL,
-    serialnum INT NOT NULL,
-    cpu_name VARCHAR(45) NOT NULL,
-    ram_size_gb INT NOT NULL,
-    disk_type VARCHAR(45) NOT NULL,
-    disk_size_gb INT NOT NULL,
-    os_version VARCHAR(15) NOT NULL,
-    harvester_version VARCHAR(15) NOT NULL
-);
-
--- -----------------------------------------------------
--- Table nester_server
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS nester_man_db.nester_server (
-    id_nester_server SERIAL PRIMARY KEY,
-    hostname VARCHAR(45) NOT NULL,
-    mac_addr VARCHAR(17) NOT NULL,
-    ip_lan VARCHAR(45) NOT NULL,
-    ip_wan VARCHAR(45) NOT NULL,
-    serialnum INT NOT NULL,
-    cpu_name VARCHAR(45) NOT NULL,
-    ram_size_gb INT NOT NULL,
-    disk_type VARCHAR(45) NOT NULL,
-    disk_size_gb INT NOT NULL,
-    os_version VARCHAR(15) NOT NULL,
-    nester_srv_version VARCHAR(15) NOT NULL
-);
-
--- -----------------------------------------------------
--- Table client
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS nester_man_db.client (
-  id_client SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS NesterManDB.client (
+  id_client INT PRIMARY KEY,
   company_name VARCHAR(45) NOT NULL,
   company_address VARCHAR(45) NOT NULL,
   responsible VARCHAR(45) NOT NULL,
