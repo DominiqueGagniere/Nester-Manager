@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS NesterManDB.instance_affectation (
   id_client INT NOT NULL,
   id_instance INT NOT NULL,
   PRIMARY KEY (id_client, id_instance),
-  FOREIGN KEY (id_client) REFERENCES nester_man_db.client(id_client),
-  FOREIGN KEY (id_instance) REFERENCES nester_man_db.instances(id_instance)
+  FOREIGN KEY (id_client) REFERENCES NesterManDB.client(id_client),
+  FOREIGN KEY (id_instance) REFERENCES NesterManDB.instances(id_instance)
 );
 
 -- -----------------------------------------------------
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.state_instance (
   id_instance INT NOT NULL,
   state VARCHAR(45) NOT NULL,
   PRIMARY KEY (id_instance),
-  FOREIGN KEY (id_instance) REFERENCES nester_man_db.instances(id_instance)
+  FOREIGN KEY (id_instance) REFERENCES NesterManDB.instances(id_instance)
 );
 -- -----------------------------------------------------
 -- Table licence
@@ -59,5 +59,5 @@ CREATE TABLE IF NOT EXISTS NesterManDB.licence (
   id_instance INT NOT NULL,
   `key` VARCHAR(8) NOT NULL,
   PRIMARY KEY (id_instance),
-  FOREIGN KEY (id_instance) REFERENCES nester_man_db.instances(id_instance)
+  FOREIGN KEY (id_instance) REFERENCES NesterManDB.instances(id_instance)
 );
