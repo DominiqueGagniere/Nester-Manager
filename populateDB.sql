@@ -38,9 +38,8 @@ DECLARE
     i INT;
 BEGIN
     FOR i IN 1..20 LOOP
-        INSERT INTO NesterManDB.state_instance (id_instance, state)
-        VALUES
-            (i, 'OK'),
-            (i + 1, 'KO');
+        INSERT INTO NesterManDB.state_instance (All_Instance_idAll_Instance, state)
+        VALUES (i * 2 - 1, 'OK'),  -- Utiliser une séquence pour éviter les doublons
+               (i * 2, 'KO');      -- Utiliser une séquence pour éviter les doublons
     END LOOP;
 END $$;
