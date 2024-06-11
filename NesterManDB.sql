@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.state_instance (
 
 CREATE TABLE IF NOT EXISTS NesterManDB.licence (
   id_instance INT NOT NULL,
-  `key` VARCHAR(8) NOT NULL,
+  key VARCHAR(8) NOT NULL,
   PRIMARY KEY (id_instance),
   FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
