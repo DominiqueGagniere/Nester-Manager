@@ -20,11 +20,11 @@ VALUES
 (1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.edu', '434-296-7288'),
 (2, 'ARESIA Inc', '3498-3414 13th St NW Washington', 'Alain Thevenot', 'at@alesia.net', '+12124567890');
 
--- -----------------------------------------------------
+/* -- -----------------------------------------------------
 -- Insertion dans instance_affectation
 -- -----------------------------------------------------
 INSERT INTO NesterManDB.instance_affectation (id_client, id_instance)
 VALUES 
 (1, 1),
 (1, 2),
-(2, 2);
+(2, 2); */
