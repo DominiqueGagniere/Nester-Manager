@@ -1,18 +1,24 @@
--- -----------------------------------------------------
 -- Schema NesterManDB
 -- -----------------------------------------------------
 CREATE ROLE mspr WITH LOGIN PASSWORD 'MSPR';
 CREATE SCHEMA IF NOT EXISTS NesterManDB AUTHORIZATION mspr;
-
 -- -----------------------------------------------------
 -- Table instance
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS nester_man_db.instances (
+CREATE TABLE IF NOT EXISTS NesterManDB.instance (
   id_instance SERIAL PRIMARY KEY,
-  id_harvester INT,
-  id_nester_server INT,
-  FOREIGN KEY (id_harvester) REFERENCES nester_man_db.harvester(id_harvester),
-  FOREIGN KEY (id_nester_server) REFERENCES nester_man_db.nester_server(id_nester_server)
+  hostname VARCHAR(45) NOT NULL,
+  mac_addr VARCHAR(17) NOT NULL,
+  ip_lan VARCHAR(45) NOT NULL,
+  ip_wan VARCHAR(45) NOT NULL,
+  serialnum INT NOT NULL,
+  cpu_name VARCHAR(45) NOT NULL,
+  ram_size_gb INT NOT NULL,
+  disk_type VARCHAR(45) NOT NULL,
+  disk_size_gb INT NOT NULL,
+  os_version VARCHAR(15) NOT NULL,
+  harvester_version VARCHAR(15),
+  nester_version VARCHAR(15)
 );
 
 CREATE TABLE IF NOT EXISTS NesterManDB.client (
