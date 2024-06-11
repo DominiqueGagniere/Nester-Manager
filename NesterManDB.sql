@@ -40,3 +40,24 @@ CREATE TABLE IF NOT EXISTS nester_man_db.instance_affectation (
   FOREIGN KEY (id_client) REFERENCES nester_man_db.client(id_client),
   FOREIGN KEY (id_instance) REFERENCES nester_man_db.instances(id_instance)
 );
+
+-- -----------------------------------------------------
+-- Table state_instance 
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS state_instance (
+  id_instance INT NOT NULL,
+  state VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_instance),
+  FOREIGN KEY (id_instance) REFERENCES nester_man_db.instances(id_instance)
+);
+-- -----------------------------------------------------
+-- Table licence
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `NesterManDB`.`licence` (
+  id_instance INT NOT NULL,
+  `key` VARCHAR(8) NOT NULL,
+  PRIMARY KEY (id_instance),
+  FOREIGN KEY (id_instance) REFERENCES nester_man_db.instances(id_instance)
+);
