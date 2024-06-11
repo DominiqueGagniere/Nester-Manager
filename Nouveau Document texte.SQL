@@ -1,0 +1,89 @@
+-- -----------------------------------------------------
+-- Schema NesterManDB
+-- -----------------------------------------------------
+CREATE USER 'mspr'@'localhost' IDENTIFIED BY 'MSPR';
+CREATE DATABASE IF NOT EXISTS NesterManDB;
+GRANT ALL PRIVILEGES ON NesterManDB.* TO 'mspr'@'localhost';
+
+-- -----------------------------------------------------
+-- Table instance
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS NesterManDB.instance (
+  id_instance INT AUTO_INCREMENT PRIMARY KEY,
+  hostname VARCHAR(45) NOT NULL,
+  mac_addr VARCHAR(17) NOT NULL,
+  ip_lan VARCHAR(45) NOT NULL,
+  ip_wan VARCHAR(45) NOT NULL,
+  serialnum INT NOT NULL,
+  cpu_name VARCHAR(45) NOT NULL,
+  ram_size_gb INT NOT NULL,
+  disk_type VARCHAR(45) NOT NULL,
+  disk_size_gb INT NOT NULL,
+  os_version VARCHAR(15) NOT NULL,
+  harvester_version VARCHAR(15),
+  nester_version VARCHAR(15)
+);
+
+-- -----------------------------------------------------
+-- Table harvester
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS NesterManDB.harvester (
+  id_instance INT AUTO_INCREMENT PRIMARY KEY,
+  hostname VARCHAR(45) NOT NULL,
+  mac_addr VARCHAR(17) NOT NULL,
+  ip_lan VARCHAR(45) NOT NULL,
+  ip_wan VARCHAR(45) NOT NULL,
+  serialnum INT NOT NULL,
+  cpu_name VARCHAR(45) NOT NULL,
+  ram_size_gb INT NOT NULL,
+  disk_type VARCHAR(45) NOT NULL,
+  disk_size_gb INT NOT NULL,
+  os_version VARCHAR(15) NOT NULL,
+  harvester_version VARCHAR(15) NOT NULL
+);
+
+-- -----------------------------------------------------
+-- Table nester_server
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS NesterManDB.nester_server (
+  id_instance INT AUTO_INCREMENT PRIMARY KEY,
+  hostname VARCHAR(45) NOT NULL,
+  mac_addr VARCHAR(17) NOT NULL,
+  ip_lan VARCHAR(45) NOT NULL,
+  ip_wan VARCHAR(45) NOT NULL,
+  serialnum INT NOT NULL,
+  cpu_name VARCHAR(45) NOT NULL,
+  ram_size_gb INT NOT NULL,
+  disk_type VARCHAR(45) NOT NULL,
+  disk_size_gb INT NOT NULL,
+  os_version VARCHAR(15) NOT NULL,
+  nester_version VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS NesterManDB.client (
+  id_client INT PRIMARY KEY,
+  company_name VARCHAR(45) NOT NULL,
+  company_address VARCHAR(45) NOT NULL,
+  responsible VARCHAR(45) NOT NULL,
+  responsible_email VARCHAR(45) NOT NULL,
+  responsible_phone VARCHAR(45) NOT NULL
+);
+
+-- -----------------------------------------------------
+-- Table instance_affectation
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS NesterManDB.instance_affectation (
+  id_client INT NOT NULL,
+  id_instance INT NOT NULL,
+  PRIMARY KEY (id_client, id_instance),
+  CONSTRAINT fk_instance_instanceaffec
+    FOREIGN KEY (id_instance)
+    REFERENCES NesterManDB.instance (id_instance)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_client_instanceaffec
+    FOREIGN KEY (id_client)
+    REFERENCES NesterManDB.client (id_client)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
