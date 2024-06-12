@@ -53,6 +53,7 @@ VALUES
 ('Maintenance'),
 ('Incident'),
 ('Request'),
+('Installation'), 
 ('Update');
 
 -- -----------------------------------------------------
@@ -62,7 +63,6 @@ INSERT INTO NesterManDB.intervention_status (status)
 VALUES 
 ('Cancel'),
 ('Planned'),
-('To be done'),
 ('Postponed'),
 ('Done'), 
 ('Fail');
@@ -71,7 +71,7 @@ VALUES
 -- Insertion dans tech
 -- -----------------------------------------------------
 
-INSERT INTO NesterManDB.tech (name, last_name, Email, Phone, Service)
+INSERT INTO NesterManDB.tech (name, last_name, email, phone, service)
 VALUES 
 ('Romain', 'Templier', 'rt@nfl.us', '+12124567890', 'Engineering'),
 ('Dominique', 'Gagniere', 'dg@nfl.us', '+12124567890', 'Maintenance');
@@ -84,4 +84,13 @@ INSERT INTO NesterManDB.installer (company_name, company_hq_address, contact_nam
 VALUES 
 ('NFL', '345 Park Avenue, 5th Floor, New York, NY 10154', 'Roger Stokoe Goodell', '150483782'),
 ('Zero Install', '12, Rue de la Paix, 75002 Paris', 'Maximilien Perrin', '150483782');
+
+-- -----------------------------------------------------
+-- Insertion dans intervention
+-- -----------------------------------------------------
+
+INSERT INTO NesterManDB.intervention (id_instance, type, status, id_tech, id_installer, reason)
+VALUES
+(7, 'Maintenance', 'Postponed', 2, 1, 'No documentation for the error, need to contact the developers')
+(20, 'Installation', 'Done', 1, 2, 'Installation successfully done')
 
