@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.intervention (
   status VARCHAR(20) NOT NULL,
   id_tech INT NOT NULL,
   id_installer INT,
-  reason VARCHAR(50) NOT NULL,
+  reason VARCHAR(100) NOT NULL,
   PRIMARY KEY (id_intervention),
   FOREIGN KEY (type) REFERENCES NesterManDB.intervention_type(type),
   FOREIGN KEY (status) REFERENCES NesterManDB.intervention_status(status),
