@@ -105,7 +105,6 @@ DECLARE
     random_key TEXT;
 BEGIN
     FOR i IN 1..20 LOOP
-        -- Générer une clé de 8 caractères aléatoires
         random_key := encode(gen_random_bytes(6), 'hex');
         INSERT INTO NesterManDB.licence (id_instance, key)
         VALUES (i, random_key);
