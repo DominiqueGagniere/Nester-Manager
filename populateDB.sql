@@ -105,8 +105,9 @@ DECLARE
     random_key TEXT;
 BEGIN
     FOR i IN 1..20 LOOP
-        random_key := encode(gen_random_bytes(6), 'hex');
+        random_key := substring(md5(random()::text), 1, 8);
         INSERT INTO NesterManDB.licence (id_instance, key)
         VALUES (i, random_key);
     END LOOP;
 END $$;
+
