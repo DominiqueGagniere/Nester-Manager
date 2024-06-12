@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.licence (
 
 CREATE TABLE IF NOT EXISTS NesterManDB.intervention_type (
   type VARCHAR(20) NOT NULL,
-  PRIMARY KEY (type),
+  PRIMARY KEY (type)
 );
 
 -- -----------------------------------------------------
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.tech (
   email VARCHAR(30) NOT NULL,
   phone VARCHAR(45) NOT NULL,
   service VARCHAR(20) NOT NULL,
-  PRIMARY KEY (id_tech),
+  PRIMARY KEY (id_tech)
 )
 
 -- -----------------------------------------------------
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.installer (
   company_hq_address VARCHAR(55) NOT NULL,
   contact_name VARCHAR(30) NOT NULL,
   duns VARCHAR(8) NOT NULL,
-  PRIMARY KEY (id_installer),
+  PRIMARY KEY (id_installer)
 )
 
 -- -----------------------------------------------------
@@ -114,5 +114,5 @@ CREATE TABLE IF NOT EXISTS NesterManDB.intervention (
   FOREIGN KEY (type) REFERENCES NesterManDB.intervention_type(type),
   FOREIGN KEY (status) REFERENCES NesterManDB.intervention_status(status),
   FOREIGN KEY (id_tech) REFERENCES NesterManDB.tech(id_tech),
-  FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance),
+  FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
