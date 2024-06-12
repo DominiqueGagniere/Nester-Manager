@@ -97,6 +97,15 @@ CREATE TABLE IF NOT EXISTS NesterManDB.installer (
   duns VARCHAR(8) NOT NULL,
   PRIMARY KEY (id_installer)
 );
+-- -----------------------------------------------------
+-- Table intervention_status
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS NesterManDB.intervention_status (
+  status VARCHAR(30) NOT NULL,
+  PRIMARY KEY (status)
+);
+
 
 -- -----------------------------------------------------
 -- Table intervention
