@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.intervention_type (
 CREATE TABLE IF NOT EXISTS NesterManDB.tech (
   id_tech SERIAL,
   name VARCHAR(30) NOT NULL,
-  lastname VARCHAR(45) NOT NULL,
+  last_name VARCHAR(45) NOT NULL,
   email VARCHAR(30) NOT NULL,
   phone VARCHAR(45) NOT NULL,
   service VARCHAR(20) NOT NULL,
