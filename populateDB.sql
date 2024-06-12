@@ -82,8 +82,8 @@ VALUES
 
 INSERT INTO NesterManDB.installer (company_name, company_hq_address, contact_name, duns)
 VALUES 
-('NFL', '345 Park Avenue, 5th Floor, New York, NY 10154', 'Roger Stokoe Goodell', 150483782),
-('Zero Install', '12, Rue de la Paix, 75002 Paris', 'Maximilien Perrin', 150483782);
+('NFL', '345 Park Avenue, 5th Floor, New York, NY 10154', 'Roger Stokoe Goodell', 15048378),
+('Zero Install', '12, Rue de la Paix, 75002 Paris', 'Maximilien Perrin', 15048378);
 
 -- -----------------------------------------------------
 -- Insertion dans intervention
