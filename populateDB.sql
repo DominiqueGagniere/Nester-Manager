@@ -93,7 +93,7 @@ VALUES
 INSERT INTO NesterManDB.intervention (id_instance, type, status, id_tech, id_installer, reason)
 VALUES
 (7, 'Maintenance', 'Postponed', 2, 1, 'No documentation for the error, need to contact the developers'),
-(20, 'Installation', 'Done', 1, 2, 'Installation successfully done')
+(20, 'Installation', 'Done', 1, 2, 'Installation successfully done');
 
 -----------------------------------------------------
 -- Insertion dans licence
