@@ -43,3 +43,45 @@ BEGIN
                (i * 2, 'KO');      -- Utiliser une séquence pour éviter les doublons
     END LOOP;
 END $$;
+
+
+-- -----------------------------------------------------
+-- Insertion dans intervention_type
+-- -----------------------------------------------------
+INSERT INTO NesterManDB.intervention_type (type)
+VALUES 
+('Maintenance'),
+('Incident'),
+('Request'),
+('Update');
+
+-- -----------------------------------------------------
+-- Insertion dans intervention_status
+-- -----------------------------------------------------
+INSERT INTO NesterManDB.intervention_status (status)
+VALUES 
+('Cancel'),
+('Planned'),
+('To be done'),
+('Postponed'),
+('Done'), 
+('Fail');
+
+-- -----------------------------------------------------
+-- Insertion dans tech
+-- -----------------------------------------------------
+
+INSERT INTO NesterManDB.tech (name, last_name, Email, Phone, Service)
+VALUES 
+('Romain', 'Templier', 'rt@nfl.us', '+12124567890', 'Engineering'),
+('Dominique', 'Gagniere', 'dg@nfl.us', '+12124567890', 'Maintenance');
+
+-- -----------------------------------------------------
+-- Insertion dans installer
+-- -----------------------------------------------------
+
+INSERT INTO NesterManDB.installer (company_name, company_hq_address, contact_name, duns)
+VALUES 
+('NFL', '345 Park Avenue, 5th Floor, New York, NY 10154', 'Roger Stokoe Goodell', '150483782'),
+('Zero Install', '12, Rue de la Paix, 75002 Paris', 'Maximilien Perrin', '150483782');
+
