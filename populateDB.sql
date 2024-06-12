@@ -1,3 +1,4 @@
+CREATE EXTENSION pgcrypto;
 DO $$
 DECLARE
     i INT;
@@ -94,3 +95,19 @@ VALUES
 (7, 'Maintenance', 'Postponed', 2, 1, 'No documentation for the error, need to contact the developers'),
 (20, 'Installation', 'Done', 1, 2, 'Installation successfully done')
 
+- -----------------------------------------------------
+-- Insertion dans licence
+-- -----------------------------------------------------
+
+DO $$
+DECLARE
+    i INT;
+    random_key TEXT;
+BEGIN
+    FOR i IN 1..20 LOOP
+        -- Générer une clé de 8 caractères aléatoires
+        random_key := encode(gen_random_bytes(6), 'hex');
+        INSERT INTO NesterManDB.licence (id_instance, key)
+        VALUES (i, random_key);
+    END LOOP;
+END $$;
