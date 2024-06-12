@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.tech (
   phone VARCHAR(45) NOT NULL,
   service VARCHAR(20) NOT NULL,
   PRIMARY KEY (id_tech)
-)
+);
 
 -- -----------------------------------------------------
 -- Table installer
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.installer (
   contact_name VARCHAR(30) NOT NULL,
   duns VARCHAR(8) NOT NULL,
   PRIMARY KEY (id_installer)
-)
+);
 
 -- -----------------------------------------------------
 -- Table intervention
