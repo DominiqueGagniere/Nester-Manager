@@ -23,11 +23,21 @@ CREATE TABLE IF NOT EXISTS NesterManDB.instance (
 
 CREATE TABLE IF NOT EXISTS NesterManDB.client (
   id_client INT PRIMARY KEY,
-  company_name VARCHAR(45) NOT NULL,
-  company_address VARCHAR(45) NOT NULL,
+  company_name VARCHAR(25) NOT NULL,
+  company_address VARCHAR(65) NOT NULL,
   responsible VARCHAR(45) NOT NULL,
   responsible_email VARCHAR(45) NOT NULL,
-  responsible_phone VARCHAR(45) NOT NULL
+  responsible_phone VARCHAR(13) NOT NULL
+);
+
+-- -----------------------------------------------------
+-- Table instance_status  
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS NesterManDB.instance_status (
+  id_instance INT NOT NULL,
+  status VARCHAR(25) NOT NULL,
+  PRIMARY KEY (id_instance),
+  FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
 
 -- -----------------------------------------------------
@@ -116,7 +126,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.intervention (
   id_instance INT NOT NULL,
   type VARCHAR(20) NOT NULL,
   status VARCHAR(20) NOT NULL,
-  id_tech INT NOT NULL,
+  id_tech INT,
   id_installer INT,
   reason VARCHAR(100) NOT NULL,
   PRIMARY KEY (id_intervention),
