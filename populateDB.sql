@@ -16,14 +16,14 @@ BEGIN
     END LOOP;
 END $$;
 
-INSERT INTO NesterManDB.client (id_client, company_name, company_address, responsible, responsible_email, responsible_phone)
+INSERT INTO NesterManDB.client (id_client, company_name, company_address, responsible, responsible_email, responsible_phone, contract_expiration)
 VALUES 
-(1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.edu', '434-296-7288'),
-(2, 'Dallas Cowboys', '1 Cowboys Way, Frisco, TX', 'Jerry Jones', 'j.jones@dallascowboys.com', '+12146892000'),
-(3, 'New England Patriots', '1 Patriot Place, Foxborough, MA', 'Robert Kraft', 'r.kraft@patriots.com', '+15083501000'),
-(4, 'San Francisco 49ers', '4900 Marie P DeBartolo Way, Santa Clara, CA', 'John York', 'j.york@49ers.com', '+14086494000'),
-(5, 'Green Bay Packers', '1265 Lombardi Ave, Green Bay, WI', 'Mark Murphy', 'm.murphy@packers.com', '+19204496790'),
-(6, 'Kansas City Chiefs', '1 Arrowhead Dr, Kansas City, MO', 'Clark Hunt', 'c.hunt@chiefs.com', '+18163402100');
+(1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.edu', '434-296-7288', CURRENT_DATE),
+(2, 'Dallas Cowboys', '1 Cowboys Way, Frisco, TX', 'Jerry Jones', 'j.jones@dallascowboys.com', '+12146892000', CURRENT_DATE),
+(3, 'New England Patriots', '1 Patriot Place, Foxborough, MA', 'Robert Kraft', 'r.kraft@patriots.com', '+15083501000', CURRENT_DATE),
+(4, 'San Francisco 49ers', '4900 Marie P DeBartolo Way, Santa Clara, CA', 'John York', 'j.york@49ers.com', '+14086494000', CURRENT_DATE),
+(5, 'Green Bay Packers', '1265 Lombardi Ave, Green Bay, WI', 'Mark Murphy', 'm.murphy@packers.com', '+19204496790', CURRENT_DATE),
+(6, 'Kansas City Chiefs', '1 Arrowhead Dr, Kansas City, MO', 'Clark Hunt', 'c.hunt@chiefs.com', '+18163402100', (CURRENT_DATE - INTERVAL '1 day')::date);
 
 -- -----------------------------------------------------
 -- Insertion dans instance_affectation
@@ -52,7 +52,8 @@ VALUES
 ('Maintenance'),
 ('Incident'),
 ('Request'),
-('Installation'), 
+('Installation'),
+('ManReboot'),
 ('Update');
 
 -- -----------------------------------------------------
@@ -108,4 +109,49 @@ BEGIN
         VALUES (i, random_key);
     END LOOP;
 END $$;
+
+-----------------------------------------------------
+-- Trigger Maintenance 
+-- -----------------------------------------------------
+CREATE OR REPLACE FUNCTION check_manual_restarts()
+RETURNS TRIGGER AS $$
+DECLARE
+    restart_count INT;
+    existing_maintenance INT;
+BEGIN
+    -- Compter les redémarrages manuels au cours de la dernière année
+    SELECT COUNT(*)
+    INTO restart_count
+    FROM NesterManDB.intervention
+    WHERE id_instance = NEW.id_instance
+      AND type = 'ManReboot'
+      AND date >= NOW() - INTERVAL '1 year';
+
+    -- Vérifier s'il y a déjà une intervention de type Maintenance au cours de la dernière année
+    SELECT COUNT(*)
+    INTO existing_maintenance
+    FROM NesterManDB.intervention
+    WHERE id_instance = NEW.id_instance
+      AND type = 'Maintenance'
+      AND reason = 'Instance has been manually restarted more than 5 times in the past year, please check.'
+      AND date >= NOW() - INTERVAL '1 year';
+
+    -- Si le nombre de redémarrages manuels est supérieur ou égal à 5 et qu'aucune intervention de type Maintenance n'existe encore
+    IF restart_count >= 5 AND existing_maintenance = 0 THEN
+        INSERT INTO NesterManDB.intervention (date, id_instance, type, status, reason)
+        VALUES (NOW(), NEW.id_instance, 'Maintenance', 'Planned', 'Instance has been manually restarted more than 5 times in the past year, please check.');
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Recréer le déclencheur
+DROP TRIGGER IF EXISTS manual_restart_trigger ON NesterManDB.intervention;
+
+CREATE TRIGGER manual_restart_trigger
+AFTER INSERT ON NesterManDB.intervention
+FOR EACH ROW
+WHEN (NEW.type = 'ManReboot')
+EXECUTE FUNCTION check_manual_restarts();
 

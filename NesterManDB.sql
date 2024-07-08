@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS NesterManDB.instance (
   harvester_version VARCHAR(15),
   nester_version VARCHAR(15)
 );
+-- -----------------------------------------------------
+-- Table client
+-- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS NesterManDB.client (
   id_client INT PRIMARY KEY,
@@ -27,7 +30,8 @@ CREATE TABLE IF NOT EXISTS NesterManDB.client (
   company_address VARCHAR(65) NOT NULL,
   responsible VARCHAR(45) NOT NULL,
   responsible_email VARCHAR(45) NOT NULL,
-  responsible_phone VARCHAR(13) NOT NULL
+  responsible_phone VARCHAR(13) NOT NULL,
+  contract_expiration DATE
 );
 
 -- -----------------------------------------------------
@@ -122,6 +126,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.intervention_status (
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS NesterManDB.intervention (
+  date DATE,
   id_intervention SERIAL,
   id_instance INT NOT NULL,
   type VARCHAR(20) NOT NULL,
