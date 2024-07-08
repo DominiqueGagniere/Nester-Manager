@@ -19,16 +19,11 @@ END $$;
 INSERT INTO NesterManDB.client (id_client, company_name, company_address, responsible, responsible_email, responsible_phone)
 VALUES 
 (1, 'NFL', '345 Park Avenue New York', 'Jeff Crandall', 'jrc2h@virginia.edu', '434-296-7288'),
-(2, 'ARESIA Inc', '3498-3414 13th St NW Washington', 'Alain Thevenot', 'at@alesia.net', '+12124567890');
-
--- -----------------------------------------------------
--- Insertion dans instance_affectation
--- -----------------------------------------------------
-INSERT INTO NesterManDB.instance_affectation (id_client, id_instance)
-VALUES 
-(1, 1),
-(1, 2),
-(2, 2);
+(2, 'Dallas Cowboys', '1 Cowboys Way, Frisco, TX', 'Jerry Jones', 'j.jones@dallascowboys.com', '+12146892000'),
+(3, 'New England Patriots', '1 Patriot Place, Foxborough, MA', 'Robert Kraft', 'r.kraft@patriots.com', '+15083501000'),
+(4, 'San Francisco 49ers', '4900 Marie P DeBartolo Way, Santa Clara, CA', 'John York', 'j.york@49ers.com', '+14086494000'),
+(5, 'Green Bay Packers', '1265 Lombardi Ave, Green Bay, WI', 'Mark Murphy', 'm.murphy@packers.com', '+19204496790'),
+(6, 'Kansas City Chiefs', '1 Arrowhead Dr, Kansas City, MO', 'Clark Hunt', 'c.hunt@chiefs.com', '+18163402100');
 
 -- -----------------------------------------------------
 -- Insertion dans instance_affectation
@@ -36,14 +31,17 @@ VALUES
 
 DO $$
 DECLARE
-    i INT;
+    client_id INT;
+    instance_id INT;
 BEGIN
-    FOR i IN 1..10 LOOP
-        INSERT INTO NesterManDB.state_instance (id_instance, state)
-        VALUES (i * 2 - 1, 'OK'),  -- Utiliser une séquence pour éviter les doublons
-               (i * 2, 'KO');      -- Utiliser une séquence pour éviter les doublons
+    FOR client_id IN 1..6 LOOP
+        FOR instance_id IN 1..2 LOOP
+            INSERT INTO NesterManDB.instance_affectation (id_client, id_instance)
+            VALUES (client_id, (client_id - 1) * 2 + instance_id);
+        END LOOP;
     END LOOP;
 END $$;
+
 
 
 -- -----------------------------------------------------

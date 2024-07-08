@@ -2,16 +2,16 @@ version: '3.8'
 
 volumes:
   postgres_data:
+  postgres_backups:
 
 networks:
   postgres_network:
     driver: bridge
 
 services:
-  # SGBD service
   postgres:
-    image: postgres:13
     container_name: postgres
+    image: postgres:13
     environment:
       POSTGRES_USER: MSPR
       POSTGRES_PASSWORD: MSPR
@@ -25,7 +25,6 @@ services:
     networks:
       - postgres_network
 
-  # Superivision (GUI de la BDD)
   adminer:
     image: adminer
     container_name: adminer
@@ -36,12 +35,10 @@ services:
     networks:
       - postgres_network
 
-  
   pg-exporter:
     image: bitnami/postgres-exporter:latest
     container_name: pg-exporter
     environment:
-      #DATA_SOURCE_URI: "postgresql://MSPR:MSPR@NesterManDB:5432/exampledb?sslmode=disable"
       POSTGRES_EXPORTER_WEB_LISTEN_ADDRESS: ":9187"
     ports:
       - "9187:9187"
@@ -50,3 +47,23 @@ services:
     networks:
       - postgres_network
 
+  backup:
+    image: postgres:13
+    container_name: backup
+    depends_on:
+      - postgres
+    volumes:
+      - ./backups:/backup
+    command: >
+      bash -c "while true; do
+        PGPASSWORD=$$POSTGRES_PASSWORD pg_dump -h postgres -U $$POSTGRES_USER -Fc $$POSTGRES_DB > /backup/$$(date +%Y-%m-%d-%H-%M-%S).dump
+        echo ""Backup done at $$(date +%Y-%m-%d_%H:%M:%S)""
+        ls -1 /backup/*.dump | head -n -2 | xargs rm -f
+        sleep 60
+      done"
+    environment:
+      POSTGRES_USER: MSPR
+      POSTGRES_PASSWORD: MSPR
+      POSTGRES_DB: NesterManDB
+    networks:
+      - postgres_network
