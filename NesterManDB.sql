@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS NesterManDB.client (
   company_address VARCHAR(65) NOT NULL,
   responsible VARCHAR(45) NOT NULL,
   responsible_email VARCHAR(45) NOT NULL,
-  responsible_phone VARCHAR(13) NOT NULL
+  responsible_phone VARCHAR(13) NOT NULL,
+  contract_expiration DATE
 );
 
 -- -----------------------------------------------------
