@@ -20,9 +20,6 @@ CREATE TABLE IF NOT EXISTS NesterManDB.instance (
   harvester_version VARCHAR(15),
   nester_version VARCHAR(15)
 );
--- -----------------------------------------------------
--- Table client
--- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS NesterManDB.client (
   id_client INT PRIMARY KEY,
@@ -30,8 +27,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.client (
   company_address VARCHAR(65) NOT NULL,
   responsible VARCHAR(45) NOT NULL,
   responsible_email VARCHAR(45) NOT NULL,
-  responsible_phone VARCHAR(13) NOT NULL,
-  contract_expiration DATE
+  responsible_phone VARCHAR(13) NOT NULL
 );
 
 -- -----------------------------------------------------
@@ -44,6 +40,8 @@ CREATE TABLE IF NOT EXISTS NesterManDB.instance_status (
   FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
 
+CREATE INDEX idx_instance_status_id_instance ON NesterManDB.instance_status(id_instance);
+
 -- -----------------------------------------------------
 -- Table instance_affectation
 -- -----------------------------------------------------
@@ -55,6 +53,9 @@ CREATE TABLE IF NOT EXISTS NesterManDB.instance_affectation (
   FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
 
+CREATE INDEX idx_instance_affectation_id_client ON NesterManDB.instance_affectation(id_client);
+CREATE INDEX idx_instance_affectation_id_instance ON NesterManDB.instance_affectation(id_instance);
+
 -- -----------------------------------------------------
 -- Table state_instance 
 -- -----------------------------------------------------
@@ -65,6 +66,9 @@ CREATE TABLE IF NOT EXISTS NesterManDB.state_instance (
   PRIMARY KEY (id_instance),
   FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
+
+CREATE INDEX idx_state_instance_id_instance ON NesterManDB.state_instance(id_instance);
+
 -- -----------------------------------------------------
 -- Table licence
 -- -----------------------------------------------------
@@ -75,6 +79,8 @@ CREATE TABLE IF NOT EXISTS NesterManDB.licence (
   PRIMARY KEY (id_instance),
   FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
+
+CREATE INDEX idx_licence_id_instance ON NesterManDB.licence(id_instance);
 
 -- -----------------------------------------------------
 -- Table intervention_type
@@ -111,6 +117,7 @@ CREATE TABLE IF NOT EXISTS NesterManDB.installer (
   duns VARCHAR(8) NOT NULL,
   PRIMARY KEY (id_installer)
 );
+
 -- -----------------------------------------------------
 -- Table intervention_status
 -- -----------------------------------------------------
@@ -120,13 +127,11 @@ CREATE TABLE IF NOT EXISTS NesterManDB.intervention_status (
   PRIMARY KEY (status)
 );
 
-
 -- -----------------------------------------------------
 -- Table intervention
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS NesterManDB.intervention (
-  date DATE,
   id_intervention SERIAL,
   id_instance INT NOT NULL,
   type VARCHAR(20) NOT NULL,
@@ -140,3 +145,9 @@ CREATE TABLE IF NOT EXISTS NesterManDB.intervention (
   FOREIGN KEY (id_tech) REFERENCES NesterManDB.tech(id_tech),
   FOREIGN KEY (id_instance) REFERENCES NesterManDB.instance(id_instance)
 );
+
+CREATE INDEX idx_intervention_id_instance ON NesterManDB.intervention(id_instance);
+CREATE INDEX idx_intervention_type ON NesterManDB.intervention(type);
+CREATE INDEX idx_intervention_status ON NesterManDB.intervention(status);
+CREATE INDEX idx_intervention_id_tech ON NesterManDB.intervention(id_tech);
+CREATE INDEX idx_intervention_id_installer ON NesterManDB.intervention(id_installer); 
